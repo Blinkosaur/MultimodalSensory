@@ -1,0 +1,106 @@
+﻿Site,Visual_Cue,Chemical_Cue,Combo,Zip Color,Kelp_Bass,Moray,Garibaldi,Any_Fish?
+Dock - Left,Move,odor,move:odor,blue,yes,no,yes,yes
+Dock - Under,Move,odor,move:odor,pink,yes,yes,no,yes
+Dock - Upper Right,Move,odor,move:odor,yellow,yes,yes,yes,yes
+Dock - Lower Right,Move,odor,move:odor,pink,yes,no,yes,yes
+Mermaid,Move,odor,move:odor,blue,yes,yes,no,yes
+Cucumber Kisses,Move,odor,move:odor,blue,yes,no,yes,yes
+Spooky Cave (Right),Move,odor,move:odor,pink,yes,yes,no,yes
+Meh 1,Move,odor,move:odor,pink,yes,yes,yes,yes
+Meh 2,Move,odor,move:odor,yellow,yes,yes,yes,yes
+Shore 1,Move,odor,move:odor,yellow,yes,no,yes,yes
+Shore 2,Move,odor,move:odor,blue,yes,no,no,yes
+Shore 3,Move,odor,move:odor,pink,yes,yes,no,yes
+Ray Cave,Move,odor,move:odor,yellow,yes,yes,yes,yes
+Point,Move,odor,move:odor,blue,yes,yes,no,yes
+Baby Gull,Move,odor,move:odor,pink,yes,no,no,yes
+Dock - Left,Move,control,move:water,blue,no,no,yes,yes
+Dock - Under,Move,control,move:water,pink,no,no,yes,yes
+Dock - Upper Right,Move,control,move:water,yellow,yes,no,yes,yes
+Dock - Lower Right,Move,control,move:water,pink,yes,no,yes,yes
+Mermaid,Move,control,move:water,blue,no,no,no,yes
+Cucumber Kisses,Move,control,move:water,blue,no,no,no,no
+Spooky Cave (Right),Move,control,move:water,pink,no,no,no,no
+Meh 1,Move,control,move:water,pink,yes,no,no,yes
+Meh 2,Move,control,move:water,yellow,no,no,no,no
+Shore 1,Move,control,move:water,yellow,yes,no,yes,yes
+Shore 2,Move,control,move:water,blue,yes,no,yes,yes
+Shore 3,Move,control,move:water,pink,no,no,no,yes
+Ray Cave,Move,control,move:water,yellow,yes,no,no,yes
+Point,Move,control,move:water,blue,no,no,no,no
+Baby Gull,Move,control,move:water,pink,no,yes,no,yes
+Dock - Left,Neutral,odor,neutral:odor,yellow,yes,yes,no,yes
+Dock - Under,Neutral,odor,neutral:odor,pink,yes,yes,no,yes
+Dock - Upper Right,Neutral,odor,neutral:odor,yellow,yes,no,yes,yes
+Dock - Lower Right,Neutral,odor,neutral:odor,yellow,no,yes,no,yes
+Mermaid,Neutral,odor,neutral:odor,blue,yes,yes,yes,yes
+Cucumber Kisses,Neutral,odor,neutral:odor,yellow,yes,yes,no,yes
+Spooky Cave (Right),Neutral,odor,neutral:odor,pink,yes,yes,no,yes
+Meh 1,Neutral,odor,neutral:odor,pink,yes,no,no,yes
+Meh 2,Neutral,odor,neutral:odor,blue,yes,yes,no,yes
+Shore 1,Neutral,odor,neutral:odor,yellow,yes,yes,no,yes
+Shore 2,Neutral,odor,neutral:odor,blue,yes,no,no,yes
+Shore 3,Neutral,odor,neutral:odor,pink,yes,no,yes,yes
+Ray Cave,Neutral,odor,neutral:odor,yellow,yes,no,no,yes
+Point,Neutral,odor,neutral:odor,blue,yes,no,no,yes
+Baby Gull,Neutral,odor,neutral:odor,pink,yes,yes,no,yes
+Dock - Left,Neutral,control,neutral:water,yellow,no,no,no,no
+Dock - Under,Neutral,control,neutral:water,pink,yes,no,yes,yes
+Dock - Upper Right,Neutral,control,neutral:water,yellow,no,no,yes,yes
+Dock - Lower Right,Neutral,control,neutral:water,yellow,no,no,no,no
+Mermaid,Neutral,control,neutral:water,blue,no,no,yes,yes
+Cucumber Kisses,Neutral,control,neutral:water,blue,yes,yes,yes,yes
+Spooky Cave (Right),Neutral,control,neutral:water,yellow,no,no,yes,yes
+Meh 1,Neutral,control,neutral:water,pink,no,no,yes,yes
+Meh 2,Neutral,control,neutral:water,yellow,yes,no,no,yes
+Shore 1,Neutral,control,neutral:water,yellow,no,no,no,yes
+Shore 2,Neutral,control,neutral:water,blue,yes,no,no,yes
+Shore 3,Neutral,control,neutral:water,pink,no,no,yes,yes
+Ray Cave,Neutral,control,neutral:water,yellow,no,no,no,no
+Point,Neutral,control,neutral:water,blue,no,no,no,no
+Baby Gull,Neutral,control,neutral:water,pink,no,no,no,no
+Dock - Left,Shape,odor,shape:odor,blue,yes,yes,no,yes
+Dock - Under,Shape,odor,shape:odor,blue,yes,yes,no,yes
+Dock - Upper Right,Shape,odor,shape:odor,yellow,yes,yes,no,yes
+Dock - Lower Right,Shape,odor,shape:odor,yellow,yes,yes,no,yes
+Mermaid,Shape,odor,shape:odor,blue,no,yes,no,yes
+Cucumber Kisses,Shape,odor,shape:odor,blue,yes,yes,no,yes
+Spooky Cave (Right),Shape,odor,shape:odor,pink,yes,yes,no,yes
+Meh 1,Shape,odor,shape:odor,blue,yes,yes,yes,yes
+Meh 2,Shape,odor,shape:odor,yellow,yes,no,yes,yes
+Shore 1,Shape,odor,shape:odor,pink,yes,yes,yes,yes
+Shore 2,Shape,odor,shape:odor,blue,yes,no,yes,yes
+Shore 3,Shape,odor,shape:odor,pink,yes,yes,yes,yes
+Ray Cave,Shape,odor,shape:odor,yellow,yes,yes,yes,yes
+Point,Shape,odor,shape:odor,blue,yes,yes,yes,yes
+Baby Gull,Shape,odor,shape:odor,pink,yes,no,no,yes
+Dock - Left,Shape,control,shape:water,blue,yes,no,no,yes
+Dock - Under,Shape,control,shape:water,blue,yes,no,yes,yes
+Dock - Upper Right,Shape,control,shape:water,yellow,yes,no,no,yes
+Dock - Lower Right,Shape,control,shape:water,yellow,no,no,no,no
+Mermaid,Shape,control,shape:water,blue,no,no,no,no
+Cucumber Kisses,Shape,control,shape:water,blue,yes,yes,no,yes
+Spooky Cave (Right),Shape,control,shape:water,blue,yes,no,yes,yes
+Meh 1,Shape,control,shape:water,blue,yes,no,no,yes
+Meh 2,Shape,control,shape:water,yellow,no,no,yes,yes
+Shore 1,Shape,control,shape:water,pink,no,no,yes,yes
+Shore 2,Shape,control,shape:water,blue,yes,no,yes,yes
+Shore 3,Shape,control,shape:water,pink,no,no,yes,yes
+Ray Cave,Shape,control,shape:water,yellow,yes,no,yes,yes
+Point,Shape,control,shape:water,blue,no,no,yes,yes
+Baby Gull,Shape,control,shape:water,pink,no,no,no,no
+Dock - Left,Neutral,odor+taste,skin:odor,pink,yes,yes,no,yes
+Dock - Under,Neutral,odor+taste,skin:odor,yellow,yes,yes,no,yes
+Dock - Upper Right,Neutral,odor+taste,skin:odor,pink,no,yes,no,yes
+Dock - Lower Right,Neutral,odor+taste,skin:odor,pink,yes,no,no,yes
+Mermaid,Neutral,odor+taste,skin:odor,yellow,yes,yes,yes,yes
+Cucumber Kisses,Neutral,odor+taste,skin:odor,pink,yes,yes,no,yes
+Spooky Cave (Right),Neutral,odor+taste,skin:odor,pink,yes,no,no,yes
+Meh 1,Neutral,odor+taste,skin:odor,yellow,yes,yes,no,yes
+Meh 2,Neutral,odor+taste,skin:odor,pink,yes,yes,no,yes
+Shore 1,Neutral,odor+taste,skin:odor,yellow,yes,yes,no,yes
+Shore 2,Neutral,odor+taste,skin:odor,pink,yes,no,no,yes
+Shore 3,Neutral,odor+taste,skin:odor,yellow,yes,yes,yes,yes
+Ray Cave,Neutral,odor+taste,skin:odor,pink,yes,yes,no,yes
+Point,Neutral,odor+taste,skin:odor,yellow,yes,yes,no,yes
+Baby Gull,Neutral,odor+taste,skin:odor,pink,yes,no,no,yes
