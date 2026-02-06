@@ -1,7 +1,7 @@
 # Project Title: 
 
-**  A Piscivore’s Guide to Its Perceptual Universe: 
- ** Multimodal sensory strategies during foraging in two predatory fishes 
+**A Piscivore’s Guide to Its Perceptual Universe:** 
+ **Multimodal sensory strategies during foraging in two predatory fishes** 
 
 # Project Location: 
 
@@ -13,7 +13,7 @@ Santa Catalina Island, California - Wrigley Marine Science Center
 
 # DATASET 1 : Multimodal_Data.csv
 
-** This data set has columns for:**
+**This data set has columns for:**
  
  Site - Sites 1-15 (location)
  
