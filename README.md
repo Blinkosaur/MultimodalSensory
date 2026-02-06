@@ -1,7 +1,7 @@
 # Project Title: 
 
-# A Piscivore’s Guide to Its Perceptual Universe: 
-# Multimodal sensory strategies during foraging in two predatory fishes 
+**  A Piscivore’s Guide to Its Perceptual Universe: 
+ ** Multimodal sensory strategies during foraging in two predatory fishes 
 
 # Project Location: 
 
