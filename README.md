@@ -1,11 +1,11 @@
 # Project Title: 
 
 **A Piscivore’s Guide to Its Perceptual Universe:** 
- **Multimodal sensory strategies during foraging in two predatory fishes** 
+ **Multimodal sensory strategies during foraging in two marine predators** 
 
 # Project Location: 
 
-Santa Catalina Island, California - Wrigley Marine Science Center
+Santa Catalina Island, California 
 
 
 # Below are descriptions for our two datasets used in the provided R script 
@@ -22,8 +22,6 @@ Santa Catalina Island, California - Wrigley Marine Science Center
  Odor_Cue - water (control) or odor (anchovy juice)
  
  Combo - treatment combination (combines visual, odor cues, taste)
- 
- Observer - name of researcher watching the footage (maya, gabby, dani)
  
  Date - Date of trial
  
