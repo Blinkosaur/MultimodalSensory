@@ -1,12 +1,12 @@
 ---
 title: "Multimodal_24"
-author: "Blinkie"
+author: 
 date: "2024-07-25"
 output: html_document
 ---
 
 
-## Getting Set Up - Libraries
+## Getting Set Up - Libraries!
 ```{r - Getting Set Up}
 library(tidyverse)
 library(ggplot2)
@@ -31,7 +31,6 @@ library(brglm2)
  Visual_Cue - neutral (grey block), shape (fish model), move (moving fish model)
  Odor_Cue - water (control) or odor (anchovy juice)
  Combo - treatment combination (combines visual, odor cues, taste)
- Observer - name of researcher watching the footage (maya, gabby, dani)
  Date - Date of trial
  Zip_Color - color of zip tie on apparatus (pink, yellow, blue)
  Species - fish species that visited trial
@@ -83,16 +82,13 @@ head(Multimodal)
 
 species_count <- Multimodal %>%
   group_by(Species) %>%
-  summarise(count = n())
+  summarise(Total_Max_Number = sum(Max_Number, na.rm = TRUE))
 
-Species_Per <- species_count %>% 
-  group_by(Species) %>% 
-  count/105
+species_count 
 
-
-
-
+#################################################
 #### ------- DATASET 2 - Yes/No Data ---------
+#################################################
 
 MultiYN  <- read.csv("Data/Multi_YN.csv")
 
@@ -135,7 +131,6 @@ kelpbass_summary <- MultiYN %>%
 print(kelpbass_summary)
 
 
-
 #####
 
 # Build a contingency table: counts of yes/no by treatment
@@ -151,7 +146,12 @@ combos <- unique(MultiYN$Combo)
 fisher_results <- data.frame(
   Combo1 = character(),
   Combo2 = character(),
+  n1 = numeric(),
+  n2 = numeric(),
   p_value = numeric(),
+  odds_ratio = numeric(),
+  CI_lower = numeric(),
+  CI_upper = numeric(),
   stringsAsFactors = FALSE
 )
 
@@ -165,13 +165,26 @@ for(i in 1:(length(combos) - 1)) {
     # Run Fisher's Exact Test
     ft <- fisher.test(table(sub_data$Combo, sub_data$`Kelp Bass`))
     
+    n1 <- sum(sub_data$Combo == combos[i])
+    n2 <- sum(sub_data$Combo == combos[j])
+    
+    # Safely extract OR and CI (not available when one group has perfect detection)
+    or_val  <- if(length(ft$estimate) > 0) as.numeric(ft$estimate) else NA
+    ci_low  <- if(length(ft$conf.int) > 0) as.numeric(ft$conf.int[1]) else NA
+    ci_high <- if(length(ft$conf.int) > 0) as.numeric(ft$conf.int[2]) else NA
+    
     # Store the result
     fisher_results <- rbind(
       fisher_results,
       data.frame(
         Combo1 = combos[i],
         Combo2 = combos[j],
-        p_value = ft$p.value
+        n1 = n1,
+        n2 = n2,
+        p_value = ft$p.value,
+        odds_ratio = or_val,
+        CI_lower = ci_low,
+        CI_upper = ci_high
       )
     )
   }
@@ -187,8 +200,11 @@ fisher_results <- fisher_results %>%
   )) %>%
   arrange(p_value)
 
-# View the table
+# Look at it!
 print(fisher_results)
+
+# Save for supplementary table
+fisher_KelpBass <- fisher_results %>% mutate(Species = "Kelp Bass")
 
 ```
 Garibaldi 
@@ -223,7 +239,12 @@ combos <- unique(MultiYN$Combo)
 fisher_results <- data.frame(
   Combo1 = character(),
   Combo2 = character(),
+  n1 = numeric(),
+  n2 = numeric(),
   p_value = numeric(),
+  odds_ratio = numeric(),
+  CI_lower = numeric(),
+  CI_upper = numeric(),
   stringsAsFactors = FALSE
 )
 
@@ -237,13 +258,26 @@ for(i in 1:(length(combos) - 1)) {
     # Run Fisher's Exact Test
     ft <- fisher.test(table(sub_data$Combo, sub_data$`Garibaldi`))
     
+    n1 <- sum(sub_data$Combo == combos[i])
+    n2 <- sum(sub_data$Combo == combos[j])
+    
+    # Safely extract OR and CI (not available when one group has perfect detection)
+    or_val  <- if(length(ft$estimate) > 0) as.numeric(ft$estimate) else NA
+    ci_low  <- if(length(ft$conf.int) > 0) as.numeric(ft$conf.int[1]) else NA
+    ci_high <- if(length(ft$conf.int) > 0) as.numeric(ft$conf.int[2]) else NA
+    
     # Store the result
     fisher_results <- rbind(
       fisher_results,
       data.frame(
         Combo1 = combos[i],
         Combo2 = combos[j],
-        p_value = ft$p.value
+        n1 = n1,
+        n2 = n2,
+        p_value = ft$p.value,
+        odds_ratio = or_val,
+        CI_lower = ci_low,
+        CI_upper = ci_high
       )
     )
   }
@@ -261,6 +295,9 @@ fisher_results <- fisher_results %>%
 
 # View the table
 print(fisher_results)
+
+# Save for supplementary table
+fisher_Garibaldi <- fisher_results %>% mutate(Species = "Garibaldi")
 
 ```
 Moray 
@@ -295,7 +332,12 @@ combos <- unique(MultiYN$Combo)
 fisher_results <- data.frame(
   Combo1 = character(),
   Combo2 = character(),
+  n1 = numeric(),
+  n2 = numeric(),
   p_value = numeric(),
+  odds_ratio = numeric(),
+  CI_lower = numeric(),
+  CI_upper = numeric(),
   stringsAsFactors = FALSE
 )
 
@@ -309,13 +351,26 @@ for(i in 1:(length(combos) - 1)) {
     # Run Fisher's Exact Test
     ft <- fisher.test(table(sub_data$Combo, sub_data$`Moray`))
     
+    n1 <- sum(sub_data$Combo == combos[i])
+    n2 <- sum(sub_data$Combo == combos[j])
+    
+    # Safely extract OR and CI (not available when one group has perfect detection)
+    or_val  <- if(length(ft$estimate) > 0) as.numeric(ft$estimate) else NA
+    ci_low  <- if(length(ft$conf.int) > 0) as.numeric(ft$conf.int[1]) else NA
+    ci_high <- if(length(ft$conf.int) > 0) as.numeric(ft$conf.int[2]) else NA
+    
     # Store the result
     fisher_results <- rbind(
       fisher_results,
       data.frame(
         Combo1 = combos[i],
         Combo2 = combos[j],
-        p_value = ft$p.value
+        n1 = n1,
+        n2 = n2,
+        p_value = ft$p.value,
+        odds_ratio = or_val,
+        CI_lower = ci_low,
+        CI_upper = ci_high
       )
     )
   }
@@ -334,19 +389,32 @@ fisher_results <- fisher_results %>%
 # View the table
 print(fisher_results)
 
+# Save for supplementary table
+fisher_Moray <- fisher_results %>% mutate(Species = "Moray")
+
+# -----------------------------------------------------------------------
+# SUPPLEMENTARY TABLE S1: All pairwise Fisher's Exact Test results
+# (% Trials Visited, within-species comparisons)
+# -----------------------------------------------------------------------
+SupTable_S1_Fisher <- bind_rows(fisher_KelpBass, fisher_Garibaldi, fisher_Moray) %>%
+   dplyr::select(Species, Combo1, Combo2, n1, n2, odds_ratio, CI_lower, CI_upper, p_value, significance) %>%
+  arrange(Species, p_value)
+
+print(SupTable_S1_Fisher)
+# Note: OR = NA indicates perfect detection in one group (100% visitation),
+# preventing odds ratio estimation. P-values remain valid.
+
 ```
 
 
-### Stats - Between Species
+### Stats - Between Species; 
+Not used in manuscript
 
-
-Oops - Between species attempt
-```{r}
-# Create a list of unique treatment combos
+```{r Stats - Between Species}
 # Get list of unique combos
 combos <- unique(MultiYN$Combo)
 
-# Create empty dataframe to store results
+# Create and empty dataframe to store results
 pairwise_species_results <- data.frame(
   Combo = character(),
   Species1 = character(),
@@ -360,24 +428,24 @@ pairwise_species_results <- data.frame(
 for (combo in combos) {
   sub_data <- MultiYN %>% filter(Combo == combo)
   
-  # Create a list of species columns
+# Create a list of species columns
   species_list <- list(
     Garibaldi = sub_data$Garibaldi,
     KelpBass = sub_data$KelpBass,
     Moray = sub_data$Moray
   )
   
-  species_names <- names(species_list)
+species_names <- names(species_list)
   
-  # All pairwise combinations of species
+# All pairwise combinations of species
   for (i in 1:(length(species_list) - 1)) {
     for (j in (i + 1):length(species_list)) {
       
-      # Extract yes/no counts for both species
+# Extract yes/no counts for both species
       species1_vals <- species_list[[i]]
       species2_vals <- species_list[[j]]
       
-      # Create 2x2 contingency table
+# Create 2x2 contingency table
       contingency_table <- matrix(
         c(
           sum(species1_vals == 1, na.rm = TRUE),
@@ -391,10 +459,10 @@ for (combo in combos) {
       rownames(contingency_table) <- c(species_names[i], species_names[j])
       colnames(contingency_table) <- c("Yes", "No")
       
-      # Run Fisher's Exact Test
+ # Run Fisher's Exact Test
       test_result <- fisher.test(contingency_table)
       
-      # Store result
+ # Store result
       pairwise_species_results <- rbind(
         pairwise_species_results,
         data.frame(
@@ -423,9 +491,6 @@ pairwise_species_results <- pairwise_species_results %>%
 print(pairwise_species_results)
 
 ```
-
-
-
 
 
 
@@ -472,7 +537,6 @@ Arrvival_Signif <- tribble(
 
 
 
-
 ArrivalGraphic = 
   Arrival_summary  %>% 
   filter(Species %in% c("Kelp Bass", "Moray")) %>% 
@@ -511,7 +575,7 @@ ArrivalGraphic
 ggsave("ArrivalGraph.png", plot = ArrivalGraphic, width = 5, height = 5, units = "in", dpi = 500)
 ```
 
-
+(Not used in manuscript)
 ```{r Arrival - Garibaldi}
 ArrivalGraphic = 
   Arrival_summary  %>% 
@@ -544,6 +608,7 @@ scale_fill_manual(values = c("grey", "#FAA275", "#B56576", "#363457")) +
          strip.background = element_rect(colour = "black", fill = "#363457"),
          strip.placement = "inside",
          strip.text = element_text(size = 10, face="bold", color = "white", family = "Lucida Grande"))
+
 ArrivalGraphic 
 ```
 
@@ -555,7 +620,7 @@ ArrivalGraphic
 
 head(Multimodal)
 
-# Getting each species of interest as a unique data frame 
+# Getting each species as a unique data frame!
 
 # 🔸 GARIBALDI 🔸
 Garibaldi <- Multimodal%>%
@@ -578,11 +643,11 @@ Moray <- Multimodal%>%
 ```{r Treatment Set Up}
 
 # Getting each species of interest within one data frame
-# Neutral:Water  
+
 TheSpecies <- Multimodal %>%
   filter(Species %in% c("Garibaldi", "Kelp Bass", "Moray"))
 
-#Making each treatment its own data frame
+# Making each treatment its own data frame
 
 # Neutral:Water 
 CubeWater <- TheSpecies %>%
@@ -675,9 +740,12 @@ summary(Dur_Garibaldi)
 EMMS_Dur_Garibaldi <- emmeans(Dur_Garibaldi, "Combo")
 pairs(EMMS_Dur_Garibaldi)
 
+# Capture for supplementary table
+DurFrame_pairs_Garibaldi <- as.data.frame(pairs(EMMS_Dur_Garibaldi)) %>%
+  mutate(Species = "Garibaldi", Metric = "Duration_Frame", Comparison_Type = "Within-Species")
 
-# Checking Model Fit
-# Simulate residuals
+
+# Checking Model Fit 
 sim_res <- simulateResiduals(Dur_Garibaldi)
 
 # Plot residuals
@@ -714,8 +782,8 @@ testUniformity(sim_res)
 #summary(Lognormal_Mod)
 
 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
 # 🏁 Kelp Bass 🏁
 
@@ -731,11 +799,15 @@ summary(Dur_KelpBass)
 EMMS_Dur_KelpBass <- emmeans(Dur_KelpBass, "Combo")
 pairs(EMMS_Dur_KelpBass)
 
+# Capture for supplementary table
+DurFrame_pairs_KelpBass <- as.data.frame(pairs(EMMS_Dur_KelpBass)) %>%
+  mutate(Species = "Kelp Bass", Metric = "Duration_Frame", Comparison_Type = "Within-Species")
+
 
 # Checking Model Fit
 shapiro.test(residuals(Dur_KelpBass))
 ### SHAPIRO test is W = 0.96952, p-value = 0.06412
-### The residuals from your model do not significantly deviate from normality based on this test, suggesting that the assumption of normality holds reasonably well
+### The residuals from the model do not significantly deviate from normality based on this test!
 
 # Simulate residuals
 sim_res <- simulateResiduals(Dur_KelpBass)
@@ -750,14 +822,14 @@ testDispersion(sim_res)
 testUniformity(sim_res)
 
 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
 # Moray 🪝
 
 MorayN <- Moray %>%
   group_by(Combo) %>%  # Replace 'Treatment' with the actual column name for your treatments
-  filter(n() > 1) %>%      # Keeps only groups where the count of rows is greater than 1
+  filter(n() > 1) %>%      # Keeps only groups where the count of rows is greater than 1 -- some treatments had 0 morays, so that's why we are doing this
   ungroup()                # Removes the grouping structure from the dataframe
 
 # Fit the gamma GLMM with random intercepts
@@ -772,10 +844,14 @@ summary(Dur_Moray)
 EMMS_Dur_Moray <- emmeans(Dur_Moray, "Combo")
 pairs(EMMS_Dur_Moray)
 
+# Capture for supplementary table
+DurFrame_pairs_Moray <- as.data.frame(pairs(EMMS_Dur_Moray)) %>%
+  mutate(Species = "Moray", Metric = "Duration_Frame", Comparison_Type = "Within-Species")
+
 # Checking Model Fit
 shapiro.test(residuals(Dur_Moray))
 ### SHAPIRO test is W = 0.9378, p-value = 0.0197
-### The residuals from your model do not significantly deviate from normality based on this test, suggesting that the assumption of normality holds reasonably well
+### The residuals from your model do not significantly deviate from normality based on this test! Woo. 
 
 # Simulate residuals
 sim_res <- simulateResiduals(Dur_Moray)
@@ -793,9 +869,9 @@ testUniformity(sim_res)
 #### Stats - Between Species
 ```{r States Duration - Between Species}
 
-# ------------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 ## 1 - CUBE:WATER
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Fit the gamma GLMM with random intercepts
 Dur_CubeWater <- glmer(Duration_Frame ~ Species + (1 | Site),
@@ -807,6 +883,10 @@ summary(Dur_CubeWater)
 # Estimated marginal means and pairwise comparisons 
 EMMS_Dur_CubeWater <- emmeans(Dur_CubeWater, "Species")
 pairs(EMMS_Dur_CubeWater)
+
+# Capture for supplementary table
+DurFrame_pairs_CubeWater <- as.data.frame(pairs(EMMS_Dur_CubeWater)) %>%
+  mutate(Treatment = "neutral:control", Metric = "Duration_Frame", Comparison_Type = "Between-Species")
 
 # Checking Model Fit
 # Simulate residuals
@@ -824,9 +904,9 @@ testUniformity(sim_res)
 
 ## NSD ##
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 ## 2 - SHAPE:WATER
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Fit the gamma GLMM with random intercepts
 Dur_ShapeWater <- glmer(Duration_Frame ~ Species + (1 | Site),
@@ -839,8 +919,11 @@ summary(Dur_ShapeWater)
 EMMS_Dur_ShapeWater <- emmeans(Dur_ShapeWater, "Species")
 pairs(EMMS_Dur_ShapeWater)
 
+# Capture for supplementary table
+DurFrame_pairs_ShapeWater <- as.data.frame(pairs(EMMS_Dur_ShapeWater)) %>%
+  mutate(Treatment = "shape:control", Metric = "Duration_Frame", Comparison_Type = "Between-Species")
+
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Dur_ShapeWater)
 
 # Plot residuals
@@ -854,9 +937,9 @@ testUniformity(sim_res)
 
 ## NSD ##
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 3. MOVE:WATER
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Fit the gamma GLMM with random intercepts
 Dur_MoveWater <- glm(Duration_Frame ~ Species,
@@ -869,6 +952,10 @@ summary(Dur_MoveWater)
 EMMS_Dur_MoveWater <- emmeans(Dur_MoveWater, "Species")
 pairs(EMMS_Dur_MoveWater)
 
+# Capture for supplementary table
+DurFrame_pairs_MoveWater <- as.data.frame(pairs(EMMS_Dur_MoveWater)) %>%
+  mutate(Treatment = "move:control", Metric = "Duration_Frame", Comparison_Type = "Between-Species")
+
 # Checking Model Fit
 plot(Dur_MoveWater)
 qqnorm(residuals(Dur_MoveWater)) 
@@ -878,7 +965,6 @@ shapiro.test(residuals(Dur_MoveWater))
 ### Model failed to converge with Site as a random effect ## 
 
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Dur_MoveWater)
 
 # Plot residuals
@@ -890,10 +976,9 @@ testDispersion(sim_res)
 # Test for uniformity of residuals
 testUniformity(sim_res)
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 4. CUBE:ODOR
-# ------------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
 # Fit the gamma GLMM with random intercepts
 Dur_CubeOdor <- glmer(Duration_Frame ~ Species + (1 | Site),
                           data = CubeOdor,
@@ -905,8 +990,11 @@ summary(Dur_CubeOdor)
 EMMS_Dur_CubeOdor<- emmeans(Dur_CubeOdor, "Species")
 pairs(EMMS_Dur_CubeOdor)
 
+# Capture for supplementary table
+DurFrame_pairs_CubeOdor <- as.data.frame(pairs(EMMS_Dur_CubeOdor)) %>%
+  mutate(Treatment = "neutral:odor", Metric = "Duration_Frame", Comparison_Type = "Between-Species")
+
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Dur_CubeOdor)
 
 # Plot residuals
@@ -921,9 +1009,9 @@ testUniformity(sim_res)
 
 ## SD -- Garibaldi:Kelp Bass - 0.0086 and Garibaldi:Moray - 0.0361
 
-# ------------------------------------------------------------------------------
+# --------------------------------------------------------------------------
 # 5. SHAPE:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Fit the gamma GLMM with random intercepts
 Dur_ShapeOdor <- glmer(Duration_Frame ~ Species + (1 | Site),
@@ -935,6 +1023,10 @@ summary(Dur_ShapeOdor)
 # Estimated marginal means and pairwise comparisons 
 EMMS_Dur_ShapeOdor<- emmeans(Dur_ShapeOdor, "Species")
 pairs(EMMS_Dur_ShapeOdor)
+
+# Capture for supplementary table
+DurFrame_pairs_ShapeOdor <- as.data.frame(pairs(EMMS_Dur_ShapeOdor)) %>%
+  mutate(Treatment = "shape:odor", Metric = "Duration_Frame", Comparison_Type = "Between-Species")
 
 # Checking Model Fit
 # Simulate residuals
@@ -954,9 +1046,9 @@ testUniformity(sim_res)
 # Garibaldi:Moray - <0.0001
 # Kelp Bass:Moray - 0.0349
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 6. MOVE:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Fit the gamma GLMM with random intercepts
 Dur_MoveOdor <- glm(Duration_Frame ~ Species,
@@ -969,6 +1061,10 @@ summary(Dur_MoveOdor)
 EMMS_Dur_MoveOdor<- emmeans(Dur_MoveOdor, "Species")
 pairs(EMMS_Dur_MoveOdor)
 
+# Capture for supplementary table
+DurFrame_pairs_MoveOdor <- as.data.frame(pairs(EMMS_Dur_MoveOdor)) %>%
+  mutate(Treatment = "move:odor", Metric = "Duration_Frame", Comparison_Type = "Between-Species")
+
 ## SD -- 
 # Garibaldi:Kelp Bass - 0.0005
 # Garibaldi:Moray - 0.0159
@@ -977,7 +1073,6 @@ pairs(EMMS_Dur_MoveOdor)
 ## Model failed to converge with Site as a random effect 
 
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Dur_MoveOdor)
 
 # Plot residuals
@@ -988,9 +1083,11 @@ testDispersion(sim_res)
 
 # Test for uniformity of residuals
 testUniformity(sim_res)
-# ------------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
 # 7. SKIN:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
 # Fit the gamma GLMM with random intercepts
 Dur_SkinOdor <- glm(Duration_Frame ~ Species,
                           data = SkinOdor,
@@ -1001,6 +1098,11 @@ summary(Dur_SkinOdor)
 # Estimated marginal means and pairwise comparisons 
 EMMS_Dur_SkinOdor<- emmeans(Dur_SkinOdor, "Species")
 pairs(EMMS_Dur_SkinOdor)
+
+# Capture for supplementary table
+DurFrame_pairs_SkinOdor <- as.data.frame(pairs(EMMS_Dur_SkinOdor)) %>%
+  mutate(Treatment = "neutral:odor:skin", Metric = "Duration_Frame", Comparison_Type = "Between-Species")
+
 
 # Checking Model Fit
 # Simulate residuals
@@ -1020,6 +1122,35 @@ testUniformity(sim_res)
 # Garibaldi:Moray - <0.0001
 # Kelp Bass:Moray - 0.1303
 ## AIC value lower without site
+
+
+
+# -----------------------------------------------------------------------
+# SUPPLEMENTARY TABLE S2: Duration in Frame — all pairwise comparisons
+# (GLMM/GLM, Gamma distribution, Tukey-adjusted)
+# -----------------------------------------------------------------------
+SupTable_S2_DurFrame <- bind_rows(
+  # Within-species (Treatment column = NA, Species column filled)
+  DurFrame_pairs_Garibaldi,
+  DurFrame_pairs_KelpBass,
+  DurFrame_pairs_Moray,
+  # Between-species (Species column = NA, Treatment column filled)
+  DurFrame_pairs_CubeWater,
+  DurFrame_pairs_ShapeWater,
+  DurFrame_pairs_MoveWater,
+  DurFrame_pairs_CubeOdor,
+  DurFrame_pairs_ShapeOdor,
+  DurFrame_pairs_MoveOdor,
+  DurFrame_pairs_SkinOdor
+) %>%
+  mutate(significance = case_when(
+    p.value <= 0.001 ~ "***",
+    p.value <= 0.01 ~ "**",
+    p.value <= 0.05 ~ "*",
+    TRUE ~ ""
+  ))
+
+print(SupTable_S2_DurFrame)
 
 ```
 
@@ -1170,7 +1301,7 @@ ggsave("DurationFrameGaribaldi.png", plot = DurationFrameGraphicGaribaldi, width
  --------------------------- 
   FACIAL CONTACT DURATION   
  --------------------------- 
-Using a glmm with a Gamma distribution, with a post-hoc pairwaise comparison using the tukey method -- this is comparing the duration of time fish spent making prolonged facial contact with the target. "Prolonged" in that it is not a distince, rapid bite - but rubbing of the face on the target 
+Using a glmm with a Gamma distribution, with a post-hoc pairwise comparison using the tukey method -- this is comparing the duration of time fish spent making prolonged facial contact with the target. "Prolonged" in that it is not a distance, rapid bite - but rubbing of the face on the target 
 
 #### Stats - Within Species - compares all treatements within a single species
 ```{r Stats Facial Contact Duration}
@@ -1211,8 +1342,11 @@ summary(FaceDur_KelpBass)
 EMMS_FaceDur_KelpBass <- emmeans(FaceDur_KelpBass, "Combo")
 pairs(EMMS_FaceDur_KelpBass)
 
+# Capture for supplementary table
+FaceDur_pairs_KelpBass <- as.data.frame(pairs(EMMS_FaceDur_KelpBass)) %>%
+  mutate(Species = "Kelp Bass", Metric = "Duration_Facial_Contact", Comparison_Type = "Within-Species")
+
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(FaceDur_KelpBass)
 
 # Plot residuals
@@ -1225,10 +1359,9 @@ testDispersion(sim_res)
 testUniformity(sim_res)
 
 
-## Tried Tweedie
+## Tried Tweedie - model less good
 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
 # Moray 🪝
 
@@ -1247,6 +1380,7 @@ summary(FaceDur_Moray)
 EMMS_FaceDur_Moray <- emmeans(FaceDur_Moray, "Combo")
 pairs(EMMS_FaceDur_Moray)
 
+
 # Checking Model Fit
 
 # Simulate residuals
@@ -1262,6 +1396,10 @@ testDispersion(sim_res)
 testUniformity(sim_res)
 
 
+
+# Capture for supplementary table
+FaceDur_pairs_Moray <- as.data.frame(pairs(EMMS_FaceDur_Moray)) %>%
+  mutate(Species = "Moray", Metric = "Duration_Facial_Contact", Comparison_Type = "Within-Species")
 ```
 
 ### Stats - Between Species - Compares each treatment combination between the three species
@@ -1269,28 +1407,27 @@ testUniformity(sim_res)
 # ------------------------------------------- #
 #   FACIAL CONTACT DURATION - BETWEEN SPECIES #
 # ------------------------------------------- #
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 ## 1 - CUBE:WATER -- 0's 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # No facial contact
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 ## 2 - SHAPE:WATER
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Only 1 data point for moray
 
-
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 3. MOVE:WATER
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # No facial contact
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 4. CUBE:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 CubeOdor <- CubeOdor %>%
   mutate(Duration_Facial_Contact = Duration_Facial_Contact + 0.001)  # Add a small constant
@@ -1306,14 +1443,19 @@ summary(Face_Dur_CubeOdor) # AIC is lower with Site as random effect
 EMMS_Face_Dur_CubeOdor<- emmeans(Face_Dur_CubeOdor, "Species")
 pairs(EMMS_Face_Dur_CubeOdor)
 
+# Capture for supplementary table
+FaceDur_pairs_CubeOdor <- as.data.frame(pairs(EMMS_Face_Dur_CubeOdor)) %>%
+  mutate(Treatment = "neutral:odor", Metric = "Duration_Facial_Contact", Comparison_Type = "Between-Species")
+
 
 
 ## SD 
 # Kelp Bass:Moray - <0.0001
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 5. SHAPE:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
 ShapeOdor <- ShapeOdor %>%
   mutate(Duration_Facial_Contact = Duration_Facial_Contact + 0.001)  # Add a small constant
 
@@ -1328,12 +1470,17 @@ summary(Face_Dur_ShapeOdor) # Lower AIC = -99.4 includes site (14.486 without si
 EMMS_Face_Dur_ShapeOdor<- emmeans(Face_Dur_ShapeOdor, "Species")
 pairs(EMMS_Face_Dur_ShapeOdor)
 
+# Capture for supplementary table
+FaceDur_pairs_ShapeOdor <- as.data.frame(pairs(EMMS_Face_Dur_ShapeOdor)) %>%
+  mutate(Treatment = "shape:odor", Metric = "Duration_Facial_Contact", Comparison_Type = "Between-Species")
+
 ## SD -- 
 # Kelp Bass:Moray - <0.0001
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 6. MOVE:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+
 MoveOdor <- MoveOdor %>%
   mutate(Duration_Facial_Contact = Duration_Facial_Contact + 0.001)  # Add a small constant
 
@@ -1349,6 +1496,10 @@ summary(Face_Dur_MoveOdor) #AIC = -33.8 (lower than without Site as a random eff
 EMMS_Face_Dur_MoveOdor<- emmeans(Face_Dur_MoveOdor, "Species")
 pairs(EMMS_Face_Dur_MoveOdor)
 
+# Capture for supplementary table
+FaceDur_pairs_MoveOdor <- as.data.frame(pairs(EMMS_Face_Dur_MoveOdor)) %>%
+  mutate(Treatment = "move:odor", Metric = "Duration_Facial_Contact", Comparison_Type = "Between-Species")
+
 # Checking Model Fit
 plot(Face_Dur_MoveOdor)
 qqnorm(residuals(Face_Dur_MoveOdor)) 
@@ -1358,9 +1509,9 @@ shapiro.test(residuals(Face_Dur_MoveOdor))
 # Kelp Bass:Moray - 0.0167
 
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 7. SKIN:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 SkinOdor <- SkinOdor %>%
   mutate(Duration_Facial_Contact = Duration_Facial_Contact + 0.001)  # Add a small constant
@@ -1375,6 +1526,32 @@ summary(Face_Dur_SkinOdor)
 # Estimated marginal means and pairwise comparisons 
 EMMS_Face_Dur_SkinOdor<- emmeans(Face_Dur_SkinOdor, "Species")
 pairs(EMMS_Face_Dur_SkinOdor)
+
+# Capture for supplementary table
+FaceDur_pairs_SkinOdor <- as.data.frame(pairs(EMMS_Face_Dur_SkinOdor)) %>%
+  mutate(Treatment = "neutral:odor:skin", Metric = "Duration_Facial_Contact", Comparison_Type = "Between-Species")
+
+# -----------------------------------------------------------------------
+# SUPPLEMENTARY TABLE S3: Duration Facial Contact — all pairwise comparisons
+# (GLM, Gamma distribution, Tukey-adjusted)
+# Note: Garibaldi excluded (no facial contact observed) & Water control treatments excluded (insufficient observations)
+# -----------------------------------------------------------------------
+SupTable_S3_FaceDur <- bind_rows(
+  FaceDur_pairs_KelpBass,
+  FaceDur_pairs_Moray,
+  FaceDur_pairs_CubeOdor,
+  FaceDur_pairs_ShapeOdor,
+  FaceDur_pairs_MoveOdor,
+  FaceDur_pairs_SkinOdor
+) %>%
+  mutate(significance = case_when(
+    p.value <= 0.001 ~ "***",
+    p.value <= 0.01 ~ "**",
+    p.value <= 0.05 ~ "*",
+    TRUE ~ ""
+  ))
+
+print(SupTable_S3_FaceDur)
 
 # Checking Model Fit
 plot(Face_Dur_SkinOdor)
@@ -1473,7 +1650,9 @@ ggsave("DurationFacialGraphic.png", plot = DurationFacialGraphic, width = 5, hei
 ```
 
 
-## 4. MAX NUMBER
+## 4. MAX NUMBER 
+
+Not used in manuscript
 
 ### Stats - Max Number
 ```{r Stats Max Number}
@@ -1513,8 +1692,8 @@ summary(Max_Garibaldi)
 #EMMS_Max_Garibaldi <- emmeans(Max_Garibaldi, "Combo")
 # pairs(EMMS_Max_Garibaldi)
 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
 # 🏁 Kelp Bass 🏁
 
@@ -1541,8 +1720,8 @@ pairs(EMMS_Max_Kelpbass)
 
 
 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
 # Moray 🪝
 
@@ -1559,6 +1738,8 @@ pairs(EMMS_Max_Moray)
 
 
 ### Graphics -  Max Number
+Not used in manuscript 
+
 ```{r - Max Number}
 
 # Pulling out the Frame Duration Data
@@ -1654,13 +1835,18 @@ ggsave("MaxGraphic.png", plot = MaxGraphic, width = 5, height = 10, units = "in"
 Bite_Garibaldi <- glm(Model_Bite ~ Combo, family = poisson, data = Garibaldi)
 
 summary(Bite_Garibaldi)  # Check the summary for convergence issues
+
 # Estimated marginal means and pairwise comparisons 
 EMMS_Bite_Garibaldi <- emmeans(Bite_Garibaldi, "Combo")
 pairs(EMMS_Bite_Garibaldi)
 
+# Capture for supplementary table
+Bite_pairs_Garibaldi <- as.data.frame(pairs(EMMS_Bite_Garibaldi)) %>%
+  mutate(Species = "Garibaldi", Metric = "Model_Bite", Comparison_Type = "Within-Species")
+
 ### NSD
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
 # 🏁 Kelp Bass 🏁
 
@@ -1676,8 +1862,12 @@ summary(Bite_KelpBass)
 EMMS_Bite_KelpBass <- emmeans(Bite_KelpBass, "Combo")
 pairs(EMMS_Bite_KelpBass)
 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
+# Capture for supplementary table
+Bite_pairs_KelpBass <- as.data.frame(pairs(EMMS_Bite_KelpBass)) %>%
+  mutate(Species = "Kelp Bass", Metric = "Model_Bite", Comparison_Type = "Within-Species")
+
+#----------------------------------------------------------------------------
+#----------------------------------------------------------------------------
 
 # Moray 🪝
 
@@ -1691,14 +1881,19 @@ summary(Bite_Moray)
 EMMS_Bite_Moray <- emmeans(Bite_Moray, "Combo")
 pairs(EMMS_Bite_Moray)
 
+# Capture for supplementary table
+Bite_pairs_Moray <- as.data.frame(pairs(EMMS_Bite_Moray)) %>%
+  mutate(Species = "Moray", Metric = "Model_Bite", Comparison_Type = "Within-Species")
+
 ```
+
 
 #### Stats - Between Species
 ```{r States Duration - Between Species}
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 ## 1 - CUBE:WATER
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Fit the gamma GLMM with random intercepts
 Bite_CubeWater <- glm(Model_Bite ~ Species, data = CubeWater, family = poisson)
@@ -1710,22 +1905,28 @@ summary(Bite_CubeWater)
 EMMS_Bite_CubeWater <- emmeans(Bite_CubeWater, "Species")
 pairs(EMMS_Bite_CubeWater)
 
+# Capture for supplementary table
+Bite_pairs_CubeWater <- as.data.frame(pairs(EMMS_Bite_CubeWater)) %>%
+  mutate(Treatment = "neutral:control", Metric = "Model_Bite", Comparison_Type = "Between-Species")
+
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Bite_CubeWater)
+
 # Plot residuals
 plot(sim_res)
+
 # Test for overdispersion
 testDispersion(sim_res)
+
 # Test for uniformity of residuals
 testUniformity(sim_res)
 
 
 ## NSD ##
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 ## 2 - SHAPE:WATER
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 Bite_ShapeWater <- glm(Model_Bite ~ Species, data = ShapeWater, family = poisson)
 
@@ -1736,21 +1937,27 @@ summary(Bite_ShapeWater)
 EMMS_Bite_ShapeWater <- emmeans(Bite_ShapeWater, "Species")
 pairs(EMMS_Bite_ShapeWater)
 
+# Capture for supplementary table
+Bite_pairs_ShapeWater <- as.data.frame(pairs(EMMS_Bite_ShapeWater)) %>%
+  mutate(Treatment = "shape:control", Metric = "Model_Bite", Comparison_Type = "Between-Species")
+
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Bite_ShapeWater)
+
 # Plot residuals
 plot(sim_res)
+
 # Test for overdispersion
 testDispersion(sim_res)
+
 # Test for uniformity of residuals
 testUniformity(sim_res)
 
 ## NSD ##
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 3. MOVE:WATER
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 Bite_MoveWater <- glm(Model_Bite ~ Species, data = MoveWater, family = poisson)
 
@@ -1761,21 +1968,27 @@ summary(Bite_MoveWater)
 EMMS_Bite_MoveWater <- emmeans(Bite_MoveWater, "Species")
 pairs(EMMS_Bite_MoveWater)
 
+# Capture for supplementary table
+Bite_pairs_MoveWater <- as.data.frame(pairs(EMMS_Bite_MoveWater)) %>%
+  mutate(Treatment = "move:control", Metric = "Model_Bite", Comparison_Type = "Between-Species")
+
 ## NSD ##
 
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Bite_MoveWater)
+
 # Plot residuals
 plot(sim_res)
+
 # Test for overdispersion
 testDispersion(sim_res)
+
 # Test for uniformity of residuals
 testUniformity(sim_res)
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 4. CUBE:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 Bite_CubeOdor <- glm(Model_Bite ~ Species, data = CubeOdor, family = poisson)
 
@@ -1786,8 +1999,11 @@ summary(Bite_CubeOdor)
 EMMS_Bite_CubeOdor<- emmeans(Bite_CubeOdor, "Species")
 pairs(EMMS_Bite_CubeOdor)
 
+# Capture for supplementary table
+Bite_pairs_CubeOdor <- as.data.frame(pairs(EMMS_Bite_CubeOdor)) %>%
+  mutate(Treatment = "neutral:odor", Metric = "Model_Bite", Comparison_Type = "Between-Species")
+
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Dur_CubeOdor)
 # Plot residuals
 plot(sim_res)
@@ -1799,9 +2015,9 @@ testUniformity(sim_res)
 
 ## NSD
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 5. SHAPE:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 Bite_ShapeOdor <- glm(Model_Bite ~ Species, data = ShapeOdor, family = poisson)
 
@@ -1812,22 +2028,28 @@ summary(Bite_ShapeOdor)
 EMMS_Bite_ShapeOdor<- emmeans(Bite_ShapeOdor, "Species")
 pairs(EMMS_Bite_ShapeOdor)
 
+# Capture for supplementary table
+Bite_pairs_ShapeOdor <- as.data.frame(pairs(EMMS_Bite_ShapeOdor)) %>%
+  mutate(Treatment = "shape:odor", Metric = "Model_Bite", Comparison_Type = "Between-Species")
+
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Dur_ShapeOdor)
+
 # Plot residuals
 plot(sim_res)
+
 # Test for overdispersion
 testDispersion(sim_res)
+
 # Test for uniformity of residuals
 testUniformity(sim_res)
 
 ## SD -- 
 # Kelp Bass:Moray - 0.0003
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 6. MOVE:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 Bite_MoveOdor <- glm(Model_Bite ~ Species, data = MoveOdor, family = poisson)
 
@@ -1838,23 +2060,29 @@ summary(Bite_MoveOdor)
 EMMS_Bite_MoveOdor<- emmeans(Bite_MoveOdor, "Species")
 pairs(EMMS_Bite_MoveOdor)
 
+# Capture for supplementary table
+Bite_pairs_MoveOdor <- as.data.frame(pairs(EMMS_Bite_MoveOdor)) %>%
+  mutate(Treatment = "move:odor", Metric = "Model_Bite", Comparison_Type = "Between-Species")
+
 ## SD -- 
 # Garibaldi:Kelp Bass - < 0.0001
 # Kelp Bass:Moray - < 0.0001
 
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Bite_MoveOdor)
+
 # Plot residuals
 plot(sim_res)
+
 # Test for overdispersion
 testDispersion(sim_res)
+
 # Test for uniformity of residuals
 testUniformity(sim_res)
 
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # 7. SKIN:ODOR
-# ------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 Bite_SkinOdor <- glm(Model_Bite ~ Species, data = SkinOdor, family = poisson)
 
@@ -1864,8 +2092,11 @@ summary(Bite_SkinOdor)
 EMMS_Bite_SkinOdor<- emmeans(Bite_SkinOdor, "Species")
 pairs(EMMS_Bite_SkinOdor)
 
+# Capture for supplementary table
+Bite_pairs_SkinOdor <- as.data.frame(pairs(EMMS_Bite_SkinOdor)) %>%
+  mutate(Treatment = "neutral:odor:skin", Metric = "Model_Bite", Comparison_Type = "Between-Species")
+
 # Checking Model Fit
-# Simulate residuals
 sim_res <- simulateResiduals(Bite_SkinOdor)
 
 # Plot residuals
@@ -1882,6 +2113,33 @@ testUniformity(sim_res)
 # Garibaldi:Moray - <0.0001
 # Kelp Bass:Moray - 0.1303
 ## AIC value lower without site
+
+
+
+# -----------------------------------------------------------------------
+# SUPPLEMENTARY TABLE S4: Model Bites — all pairwise comparisons
+# (GLM, Poisson distribution, Tukey-adjusted)
+# -----------------------------------------------------------------------
+SupTable_S4_Bites <- bind_rows(
+  Bite_pairs_Garibaldi,
+  Bite_pairs_KelpBass,
+  Bite_pairs_Moray,
+  Bite_pairs_CubeWater,
+  Bite_pairs_ShapeWater,
+  Bite_pairs_MoveWater,
+  Bite_pairs_CubeOdor,
+  Bite_pairs_ShapeOdor,
+  Bite_pairs_MoveOdor,
+  Bite_pairs_SkinOdor
+) %>%
+  mutate(significance = case_when(
+    p.value <= 0.001 ~ "***",
+    p.value <= 0.01 ~ "**",
+    p.value <= 0.05 ~ "*",
+    TRUE ~ ""
+  ))
+
+print(SupTable_S4_Bites)
 
 ```
 ### Graphic - Model Bites
@@ -1977,6 +2235,13 @@ final_plot
 
 ggsave("test.png", plot = final_plot, width = 7, height = 10, units = "in", dpi = 500)
 
+```
+
+```{r}
+write.csv(SupTable_S2_DurFrame, "S2_Duration_Frame.csv")
+write.csv(SupTable_S3_FaceDur,  "S3_Facial_Contact.csv")
+write.csv(SupTable_S4_Bites,    "S4_Model_Bites.csv")
+write.csv(SupTable_S1_Fisher,   "S1_Fisher_Arrival.csv")
 ```
 
 
