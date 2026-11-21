@@ -1,7 +1,7 @@
 # Project Title: 
 
-**A Piscivore’s Guide to Its Perceptual Universe:** 
- **Multimodal sensory strategies during foraging in two marine predators** 
+**Field experiments reveal how two kelp forest piscivores use multimodal sensory strategies during foraging**
+
 
 # Project Location: 
 
